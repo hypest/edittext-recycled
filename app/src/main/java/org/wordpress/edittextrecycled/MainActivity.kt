@@ -3,9 +3,7 @@ package org.wordpress.edittextrecycled
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Spannable
-import android.text.SpannableString
-import android.text.method.ScrollingMovementMethod
-import android.text.style.BackgroundColorSpan
+import android.text.SpannableStringBuilder
 import android.text.style.DrawableMarginSpan
 import android.widget.TextView
 
@@ -15,13 +13,14 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val textView = findViewById<TextView>(R.id.textview)
+        val edittext = findViewById<TextView>(R.id.edittext)
 
-        val spanned = SpannableString("q\nline2")
-        spanned.setSpan(DrawableMarginSpan(resources.getDrawable(R.drawable.empty), 0), 0, 2, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-        spanned.setSpan(BackgroundColorSpan(resources.getColor(android.R.color.holo_orange_dark)), 2, spanned.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val spanned = SpannableStringBuilder()
+        for (i in 0..1000) {
+            spanned.append("line $i\n")
+        }
+        spanned.setSpan(DrawableMarginSpan(resources.getDrawable(R.drawable.empty), 0), 0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-        textView.movementMethod = ScrollingMovementMethod()
-        textView.text = spanned
+        edittext.setText(spanned, TextView.BufferType.EDITABLE)
     }
 }

@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     tools:context="org.wordpress.edittextrecycled.MainActivity">
 
-    <TextView
-        android:id="@+id/textview"
+    <EditText
+        android:id="@+id/edittext"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Hello World!"
