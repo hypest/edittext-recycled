@@ -4,9 +4,7 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.text.Spannable
 import android.text.SpannableStringBuilder
-import android.text.style.DrawableMarginSpan
 import android.util.Log
 import android.view.View
 import android.widget.TextView
