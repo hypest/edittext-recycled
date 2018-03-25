@@ -1,5 +1,7 @@
 package org.wordpress.edittextrecycled
 
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RectShape
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.Spannable
@@ -19,9 +21,13 @@ class MainActivity : AppCompatActivity() {
 
         val spanned = SpannableStringBuilder()
         for (i in 0..100) {
-            spanned.append("line $i\n")
+            spanned.append("$i\n".padStart(10, ' '))
         }
-        spanned.setSpan(DrawableMarginSpan(resources.getDrawable(R.drawable.empty), 0), 0, 7, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val shape = ShapeDrawable(RectShape())
+        shape.intrinsicWidth = 1
+        shape.intrinsicHeight = 600
+        shape.setBounds(0, 0, shape.intrinsicWidth, shape.intrinsicHeight)
+//        spanned.setSpan(DrawableMarginSpan(shape, 0), 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
         edittext.setText(spanned, TextView.BufferType.EDITABLE)
         edittext.addOnLayoutChangeListener({ view: View?, left: Int, top: Int, right: Int, bottom: Int, oldLeft: Int, oldTop: Int, oldRight: Int, oldBottom: Int ->
