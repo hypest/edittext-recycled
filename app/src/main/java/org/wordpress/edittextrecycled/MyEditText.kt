@@ -3,6 +3,7 @@ package org.wordpress.edittextrecycled
 import android.content.Context
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
+import android.text.Spannable
 import android.text.SpannableString
 import android.text.SpannableStringBuilder
 import android.text.style.DrawableMarginSpan
@@ -22,14 +23,18 @@ class MyEditText : EditText {
         val topLinePrev = layout.getLineForVertical(oldVert)
         val topLine = layout.getLineForVertical(vert)
 
-        if (topLine > topLinePrev) {
-            val endHidden = layout.getLineEnd(topLinePrev)
+        // wait till we have couple of lines hidden
+        if (topLine > topLinePrev && topLine > 1) {
+            // replace two lines up the current one
+            val hiddenLine = topLine - 2
 
-            val prevBottom = layout.getLineBottom(topLinePrev)
+            val endHidden = layout.getLineEnd(hiddenLine)
+
+            val prevBottom = layout.getLineBottom(hiddenLine)
 
             val shape = ShapeDrawable(RectShape())
             shape.intrinsicWidth = 1
-            shape.intrinsicHeight = prevBottom
+            shape.intrinsicHeight = prevBottom // the span will be as tall as the replaced lines
             shape.setBounds(0, 0, shape.intrinsicWidth, shape.intrinsicHeight)
 
             // Cast to SpannableStringBuilder otherwise the `replace` call will mess up the spans and kill the scroll
@@ -38,11 +43,14 @@ class MyEditText : EditText {
                 t.removeSpan(span)
             }
 
-            val spannable = SpannableString("@\n".padStart(10).repeat(topLinePrev + 1))
+            val spannable = SpannableString("@\n".padStart(10))
             span = DrawableMarginSpan(shape, 0)
-//            spannable.setSpan(span, 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            spannable.setSpan(span, 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
 
-            t.replace(0, endHidden, spannable)
+            post {
+                t.replace(0, endHidden, spannable)
+                refreshDrawableState()
+            }
         }
     }
 }
