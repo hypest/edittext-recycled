@@ -16,7 +16,7 @@ class MyEditText : EditText {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    var span: Any? = null
+    var prevSpan: Any? = null
 
     override fun onScrollChanged(horiz: Int, vert: Int, oldHoriz: Int, oldVert: Int) {
         super.onScrollChanged(horiz, vert, oldHoriz, oldVert)
@@ -39,14 +39,16 @@ class MyEditText : EditText {
 
             // Cast to SpannableStringBuilder otherwise the `replace` call will mess up the spans and kill the scroll
             val t = text as SpannableStringBuilder
-            if (span != null) {
-                t.removeSpan(span)
-            }
 
             val spannable = SpannableString("@\n".padStart(10))
-            span = DrawableMarginSpan(shape, 0)
+            val span = DrawableMarginSpan(shape, 0)
             spannable.setSpan(span, 0, 10, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
             t.replace(0, endHide, spannable)
+
+            if (prevSpan != null) {
+                t.removeSpan(prevSpan)
+            }
+            prevSpan = span
 
             refreshDrawableState()
         }
